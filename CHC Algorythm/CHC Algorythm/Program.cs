@@ -262,15 +262,13 @@ namespace CHC_Algorithm
             // Initialization
             int wantedIterations;
             string targetString;
-            string defaultString = "0101000100001000010101100100010111111011010010011100011110001111010101101100001100011010111011001001001111110100000010110100001111001110100101110111100110111010001101111100100110011000001010101001100101010110000111111000000111100101001101000011011010000111001101011101100001011100000000110000101100010011001011101100000010010010010010001011110010100101001110000110100010111000001010100010011100010111011000110001100100001100110100110000010000101011101100011011010100111110000111000010100110001000100110111100110100011110000100111101101100010100101110010011111000111100010100000110100000111011111110101100111000001011011010110010001001000011101001101000110110100110001000000111010000111000101010001010110010100110000001100010101101101111101111111111000001000010100100001000011000010110101001100010011100010100110";
+            string defaultString = "01010001000010000101011001000101111110110100100111001110010100101010010000101001100010001001101111001101000111100001001111011011000101001011100100111110001111000101000001101000001110111111101011001110000010110110101100100010010000111010011010010101000110110100110001000000111010000100011000010110101001100010011100010100110";
             int chromosomeLenght;
             int populationSize;
             int delta;
-
             Stopwatch stopwatch = new Stopwatch();
 
             
-
             // User input
             // Getting population size
             Console.Write("Population size: ");
@@ -293,6 +291,7 @@ namespace CHC_Algorithm
             delta = chromosomeLenght / 4;
             // User input end
 
+
             Population[] parent = new Population[populationSize];
             Population[] child = new Population[populationSize];
             Population[] newPop = new Population[populationSize];
@@ -301,6 +300,7 @@ namespace CHC_Algorithm
             CheckCorrectnes(parent, chromosomeLenght, targetString);
             stopwatch.Start();
             // Inititialization end
+
 
             for (int i = 0; i < wantedIterations; i++)
             {
@@ -335,6 +335,10 @@ namespace CHC_Algorithm
 
                 // Print stats
                 Console.WriteLine($"Iteration: {i}\tBest: {parent.Max(x => x.Correctness)}%\tWorst: {parent.Min(x => x.Correctness)}%\tDelta: {delta}");
+
+                // Print best individual
+                var best = parent.OrderByDescending(x=>x.Correctness).Take(1).ToList();
+                Console.WriteLine($"{best[0].Value}\n");
                 
                 // Checks if perfect individual is made
                 if (parent.Where(x=>x.Correctness == 100).Count() != 0)
