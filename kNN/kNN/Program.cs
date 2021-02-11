@@ -149,9 +149,17 @@ namespace kNN
             Console.WriteLine($"   Setosa:     {(setosaAmount / kValue) * 100}%");
         }
 
+        /// <summary>
+        /// Sprawdza punkty w zestawie testowym. Dla każdegu puntu sprawdza K liczbę sąsiadów i porównuje ją z istniejącym w zestawie elementem. Wyświetla
+        /// procent będądy ilościa poprawie zgadniętych punktów.
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="testSet"></param>
+        /// <param name="kValue"></param>
+        /// <param name="trainSet"></param>
         public static void EvaluateTest(List<DataPoint> dataSet, List<DataPoint> testSet, int kValue, List<DataPoint> trainSet)
         {
-            int goodGuess = 0;
+            double goodGuess = 0;
 
             foreach (var testPoint in testSet)
             {
@@ -225,21 +233,7 @@ namespace kNN
                     bestGuess = "setosa";
                 }
 
-                //DataPoint guess = new DataPoint()
-                //{
-                //    sepal_length = testPoint.sepal_length,
-                //    sepal_width = testPoint.sepal_width,
-                //    petal_length = testPoint.petal_length,
-                //    petal_width = testPoint.petal_width,
-                //    species = bestGuess,
-                //};
-
-                //if (dataSet.Contains(guess))
-                //{
-                //    goodGuess++;
-                //}
-
-                goodGuess += dataSet
+                int count = dataSet
                     .Where(x => x.petal_length == testPoint.petal_length)
                     .Where(x => x.petal_width == testPoint.petal_width)
                     .Where(x => x.sepal_length == testPoint.sepal_length)
@@ -247,8 +241,14 @@ namespace kNN
                     .Where(x => x.species == bestGuess)
                     .Distinct()
                     .Count();
+
+                if (count > 0)
+                {
+                    goodGuess++;
+                }
             }
-            Console.WriteLine($"Test set: {goodGuess }");
+            Console.WriteLine($"Ogólna poprawność:");
+            Console.WriteLine($"   Zestaw danych: {(goodGuess / testSet.Count()) * 100}%");
         }
 
         static void Main(string[] args)
